@@ -1,6 +1,10 @@
 import json
 import re
 
+# Enhancement: Skip the Table of Contents markdown cell automatically.
+# The TOC cell starts with "# Table of Contents" after recent insertion.
+# We detect and ignore any markdown cell whose first non-empty line matches that pattern.
+
 def extract_markdown_content(notebook_path):
     """
     Extract markdown content excluding references, appendix, headings, and tables
@@ -14,8 +18,14 @@ def extract_markdown_content(notebook_path):
     for cell in notebook['cells']:
         if cell['cell_type'] == 'markdown':
             cell_content = ''.join(cell['source']).strip()
+
+            # Skip Table of Contents cell
+            if cell_content:
+                first_line = cell_content.split('\n', 1)[0].strip()
+                if re.match(r'^#+\s*Table of Contents$', first_line, flags=re.IGNORECASE) or first_line.lower() == 'table of contents':
+                    continue
             
-            # Check if this cell starts a section to skip
+            # Check if this cell starts a section to skip (References / Appendix)
             if (cell_content.startswith('# References') or 
                 cell_content.startswith('#References') or
                 'references:' in cell_content.lower() or
