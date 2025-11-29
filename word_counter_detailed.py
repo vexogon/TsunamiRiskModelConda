@@ -111,7 +111,7 @@ def count_words(content_lines):
     return len(words), all_text
 
 # Extract content
-notebook_path = '/Users/matthewbutler/Documents/TsunamiRiskModelConda/modelAndEDA3-refined9.ipynb'
+notebook_path = '/Users/matthewbutler/Documents/TsunamiRiskModelConda/modelAndEDA FINAL.ipynb'
 content_lines = extract_markdown_content(notebook_path)
 word_count, full_text = count_words(content_lines)
 
